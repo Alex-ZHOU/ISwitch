@@ -18,9 +18,16 @@
 <resources>
     <declare-styleable name="ISwitch">
         <attr name="isOpen" format="boolean" />
-        <attr name="openColor" format="color"/>
-        <attr name="closeColor" format="color"/>
-        <attr name="buttonColor" format="color"/>
+        <attr name="openColor" format="color|integer"/>
+        <attr name="closeColor" format="color|integer"/>
+        <attr name="buttonColor" format="color|integer"/>
         <attr name="animationTime" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="MultiSwitch">
+        <attr name="shape">
+            <enum name="rect" value="1" />
+            <enum name="circle" value="2" />
+        </attr>
     </declare-styleable>
 </resources>

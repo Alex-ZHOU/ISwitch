@@ -48,7 +48,7 @@ public class ISwitch extends View {
 
     private final static int DEFAULT_BUTTON_COLOR = Color.WHITE;
 
-    private final static int DEFAULT_BUTTON_ANIMATION_TIME = 300;
+    private final static int DEFAULT_BUTTON_ANIMATION_TIME = 100;
 
     private Boolean mIsOpen = false;
 
@@ -62,7 +62,6 @@ public class ISwitch extends View {
 
     // 按钮圆心到左边的距离
     private int mButtonX;
-
 
     private int mWidth;
 
@@ -114,7 +113,7 @@ public class ISwitch extends View {
 
         mButtonColor = typedArray.getInt(R.styleable.ISwitch_buttonColor, DEFAULT_BUTTON_COLOR);
 
-        mAnimationTime =  typedArray.getInt(R.styleable.ISwitch_animationTime, DEFAULT_BUTTON_ANIMATION_TIME);
+        mAnimationTime = typedArray.getInt(R.styleable.ISwitch_animationTime, DEFAULT_BUTTON_ANIMATION_TIME);
 
         typedArray.recycle();
 
@@ -132,12 +131,12 @@ public class ISwitch extends View {
     }
 
     private void initDrawingVal() {
-        mWidth  = (int) (mHeight * 1.5);
+        //mWidth  = (int) (mHeight * 1.5);
         backCircleRect = new RectF(0, 0, mWidth, mHeight);
         mButtonRadius = mHeight / 2;
         if (mIsOpen) {
             mAlpha = 255;
-            mButtonX = (int) (mHeight * 1.5) - mButtonRadius;
+            mButtonX = ((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius);
         } else {
             mAlpha = 0;
             mButtonX = mButtonRadius;
@@ -187,27 +186,34 @@ public class ISwitch extends View {
             return super.onTouchEvent(event);
         }
 
-
+        // 设置时间差值器
         TimeInterpolator timeInterpolator = new TimeInterpolator() {
             @Override
             public float getInterpolation(float v) {
                 debug(v + " " + mButtonX);
                 if (mIsOpen) {
                     mAlpha = (int) ((1 - v) * 255);
-                    mButtonX = (int) ((1 - v) * mButtonRadius + mButtonRadius);
+                    // mButtonX = (int) ((1-v) * mButtonRadius + mButtonRadius);
+                    mButtonX = (int) ((1 - v) * (mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius);
                     invalidate();
                 } else {
                     mAlpha = (int) (v * 255);
-                    mButtonX = (int) (v * mButtonRadius + mButtonRadius);
+                    // mButtonX = (int) (v * mButtonRadius + mButtonRadius);
+                    mButtonX = (int) (v * (mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius);
                     invalidate();
                 }
                 if (v == 1f) {
                     if (mIsOpen) {
                         mIsOpen = false;
-                        mISwitchOnClickListeners.close();
+                        if (mISwitchOnClickListeners != null) {
+                            mISwitchOnClickListeners.close();
+                        }
                     } else {
                         mIsOpen = true;
-                        mISwitchOnClickListeners.open();
+                        if (mISwitchOnClickListeners != null) {
+                            mISwitchOnClickListeners.open();
+                        }
+
                     }
                 }
 
@@ -217,9 +223,67 @@ public class ISwitch extends View {
 
         };
 
+        // 运行动画设置时间和时间差值器
         this.animate().setDuration(mAnimationTime).setInterpolator(timeInterpolator).start();
 
         return super.onTouchEvent(event);
+    }
+
+
+    public Boolean getIsOpen() {
+        return mIsOpen;
+    }
+
+    public void setIsOpen(Boolean mIsOpen) {
+        this.mIsOpen = mIsOpen;
+        if (mIsOpen) {
+            mAlpha = 255;
+            mButtonX = ((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius);
+        } else {
+            mAlpha = 0;
+            mButtonX = mButtonRadius;
+        }
+        invalidate();
+    }
+
+    public int getOpenColor() {
+        return mOpenColor;
+    }
+
+    public void setOpenColor(int mOpenColor) {
+        this.mOpenColor = mOpenColor;
+    }
+
+    public int getCloseColor() {
+        return mCloseColor;
+    }
+
+    public void setCloseColor(int mCloseColor) {
+        this.mCloseColor = mCloseColor;
+    }
+
+    public int getButtonColor() {
+        return mButtonColor;
+    }
+
+    public void setButtonColor(int mButtonColor) {
+        this.mButtonColor = mButtonColor;
+    }
+
+    public int getViewWidth() {
+        return mWidth;
+    }
+
+    public void setViewWidth(int mWidth) {
+        this.mWidth = mWidth;
+    }
+
+    public int getViewHeight() {
+        return mHeight;
+    }
+
+    public void setViewHeight(int mHeight) {
+        this.mHeight = mHeight;
     }
 
     // 设置监听
