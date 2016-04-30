@@ -28,35 +28,35 @@
 
     <com.alex.alexswitch.ISwitch
         android:id="@+id/id_apple_is"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
-        alexswitch:isOpen="false" />
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        alexswitch:animationTime="300"/>
 
-    <com.alex.alexswitch.ISwitch
-        android:id="@+id/id_apple2_is"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
-        android:layout_below="@id/id_apple_is"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        alexswitch:animationTime="2000"
-        alexswitch:buttonColor="#ffff00"
-        alexswitch:closeColor="#cddc39"
-        alexswitch:isOpen="true"
-        alexswitch:openColor="#673ab7" />
+    <!--<com.alex.alexswitch.ISwitch-->
+        <!--android:id="@+id/id_apple2_is"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="75dp"-->
+        <!--android:layout_below="@id/id_apple_is"-->
+        <!--android:layout_marginTop="@dimen/activity_vertical_margin"-->
+        <!--alexswitch:animationTime="2000"-->
+        <!--alexswitch:buttonColor="#ffff00"-->
+        <!--alexswitch:closeColor="#cddc39"-->
+        <!--alexswitch:isOpen="true"-->
+        <!--alexswitch:openColor="#673ab7" />-->
 
 
-    <com.alex.alexswitch.MultiSwitch
-        android:layout_width="150dp"
-        android:layout_height="75dp"
-        android:layout_below="@id/id_apple2_is"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        alexswitch:shape="circle" />
+    <!--<com.alex.alexswitch.MultiSwitch-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="75dp"-->
+        <!--android:layout_below="@id/id_apple2_is"-->
+        <!--android:layout_marginTop="@dimen/activity_vertical_margin"-->
+        <!--alexswitch:type="circle" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:text="1231" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="1231" />-->
 
 </RelativeLayout>

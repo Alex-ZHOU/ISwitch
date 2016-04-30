@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2016 AlexZHOU
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,18 +15,36 @@
   -->
 
 <resources>
+
+
+    <attr name="isOpen" format="boolean" />
+    <attr name="openColor" format="color|integer" />
+    <attr name="closeColor" format="color|integer" />
+    <attr name="buttonColor" format="color|integer" />
+
+
     <declare-styleable name="ISwitch">
-        <attr name="isOpen" format="boolean" />
-        <attr name="openColor" format="color|integer"/>
-        <attr name="closeColor" format="color|integer"/>
-        <attr name="buttonColor" format="color|integer"/>
+        <!--<attr name="isOpen" format="boolean" />-->
+        <!--<attr name="openColor" format="color|integer"/>-->
+        <!--<attr name="closeColor" format="color|integer"/>-->
+        <!--<attr name="buttonColor" format="color|integer"/>-->
+        <!--<attr name="animationTime" format="integer"/>-->
+        <attr name="isOpen" />
+        <attr name="openColor" />
+        <attr name="closeColor" />
+        <attr name="buttonColor" />
         <attr name="animationTime" format="integer"/>
     </declare-styleable>
 
-    <declare-styleable name="MultiSwitch">
-        <attr name="shape">
-            <enum name="rect" value="1" />
-            <enum name="circle" value="2" />
-        </attr>
-    </declare-styleable>
+    <!--<declare-styleable name="MultiSwitch">-->
+    <!--<attr name="isOpen" format="boolean" />-->
+    <!--<attr name="openColor" format="color|integer"/>-->
+    <!--<attr name="closeColor" format="color|integer"/>-->
+    <!--<attr name="buttonColor" format="color|integer"/>-->
+    <!--<attr name="animationTime" format="integer"/>-->
+    <!--<attr name="type">-->
+    <!--<enum name="rect" value="1" />-->
+    <!--<enum name="circle" value="2" />-->
+    <!--</attr>-->
+    <!--</declare-styleable>-->
 </resources>
