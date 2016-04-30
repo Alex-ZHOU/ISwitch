@@ -37,7 +37,6 @@ import android.view.ViewConfiguration;
  *
  * ISwitch
  * Make mButtonRadius switch like this ios switch.
- * 做一个模仿苹果的开关
  */
 public class ISwitch extends View {
 
@@ -82,9 +81,17 @@ public class ISwitch extends View {
 
     private RectF backCircleRect;
 
-    private boolean mIsAnimationRun = false;
+    private int mTouchSlop;
 
-    private boolean mIsMove = false;
+    private int mClickTimeout;
+
+    private int mMoveDsitance;
+
+    private int mMinDistance;
+
+    private int mMaxDistance;
+
+    private boolean mIsAnimationRun = false;
 
     private ISwitchOnClickListeners mISwitchOnClickListeners;
 
@@ -95,8 +102,6 @@ public class ISwitch extends View {
         void close();
     }
 
-    private int mTouchSlop;
-    private int mClickTimeout;
 
     public ISwitch(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -149,16 +154,24 @@ public class ISwitch extends View {
         //mWidth  = (int) (mHeight * 1.5);
         backCircleRect = new RectF(0, 0, mWidth, mHeight);
         mButtonRadius = mHeight / 2;
+
+        mMinDistance = mButtonRadius;
+
+        mMaxDistance = mWidth - mButtonRadius;
+
+        mMoveDsitance = mMaxDistance - mMinDistance;
+
         if (mIsOpen) {
             mAlpha = 255;
-            mButtonX = ((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius);
+            mButtonX = mMaxDistance;
         } else {
             mAlpha = 0;
-            mButtonX = mButtonRadius;
+            mButtonX = mMinDistance;
         }
 
         setClickable(true);
     }
+
 
     public int measureDimension(int defaultSize, int measureSpec) {
         int result;
@@ -214,75 +227,60 @@ public class ISwitch extends View {
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                // debug("onTouchEvent " + "ACTION_DOWN :" + action);
+                debug("onTouchEvent " + "ACTION_DOWN :" + action);
                 mStartX = event.getX();
                 mStartY = event.getY();
                 mLastX = mStartX;
                 setPressed(true);
                 break;
             case MotionEvent.ACTION_MOVE:
-                //debug("onTouchEvent " + "ACTION_MOVE :" + action);
+
+                debug("onTouchEvent " + "ACTION_MOVE :" + action);
                 float x = event.getX();
                 int temp = (int) (mButtonX + (x - mLastX));
                 mLastX = x;
-                if (temp < mButtonRadius || temp > ((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius)) {
-                    // return false;
-                    debug("onTouchEvent " + "-------");
+                if (temp < mMinDistance || temp > mMaxDistance) {
+                    debug("onTouchEvent " + "Invalid");
                 } else {
-                    debug("onTouchEvent " + "-------" + mAlpha);
-
-                    mAlpha = 255 * (temp - mButtonRadius) / (((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius) - mButtonRadius);
-
+                    debug("onTouchEvent " + "Effective");
+                    mAlpha = 255 * (temp - mMinDistance) / mMoveDsitance;
                     mButtonX = temp;
                     invalidate();
                 }
-                mIsMove = true;
                 break;
             case MotionEvent.ACTION_UP:
-                //debug("onTouchEvent " + "ACTION_UP :" + action);
-                int tempClose = mButtonX - mButtonRadius;
-                int tempOpen = (((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius) - mButtonX);
+                debug("onTouchEvent " + "ACTION_UP" + action);
+                int tempClose = mButtonX - mMinDistance;
+                int tempOpen = mMaxDistance - mButtonX;
 
                 float time = event.getEventTime() - event.getDownTime();
-                if (deltaX < mTouchSlop && deltaY < mTouchSlop && time < mClickTimeout ) {
+                if (deltaX < mTouchSlop && deltaY < mTouchSlop && time < mClickTimeout) {
+                    debug("onTouchEvent " + "Click");
                     performClick();
                     if (mIsOpen) {
-                       // viewAnimation(mAnimationTime, false, 255);
-
-                        int tempTime2 = mAnimationTime * (mButtonX - mButtonRadius) /
-                                (((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius) - mButtonRadius);
+                        int tempTime2 = mAnimationTime * (mButtonX - mMinDistance) / mMoveDsitance;
                         viewAnimation(tempTime2, false, mAlpha);
                     } else {
-                        // viewAnimation(mAnimationTime, true, 0);
-                        int tempTime = mAnimationTime * (((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius) - mButtonX) /
-                                (((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius) - mButtonRadius);
+                        int tempTime = mAnimationTime * (mMaxDistance - mButtonX) / mMoveDsitance;
                         viewAnimation(tempTime, true, mAlpha);
-
                     }
 
-                    debug("onTouchEvent " + "-------" + "Click");
                 } else {
-                    debug("onTouchEvent " + "-------" + "Move");
-
-
+                    debug("onTouchEvent " + "Move");
 
                     if (tempClose > tempOpen) {
                         // TO OPEN
-                        int tempTime = mAnimationTime * (((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius) - mButtonX) /
-                                (((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius) - mButtonRadius);
+                        int tempTime = mAnimationTime * tempOpen / mMoveDsitance;
                         viewAnimation(tempTime, true, mAlpha);
-                        debug("onTouchEvent " + "-------" + "Open" + tempTime);
+                        debug("onTouchEvent " + "ToOpen" + tempTime);
                     } else {
                         // TO CLOSE
-                        int tempTime2 = mAnimationTime * (mButtonX - mButtonRadius) /
-                                (((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius) - mButtonRadius);
+                        int tempTime2 = mAnimationTime * tempClose / mMoveDsitance;
                         viewAnimation(tempTime2, false, mAlpha);
-                        debug("onTouchEvent " + "-------" + "Close" + tempTime2);
-
+                        debug("onTouchEvent " + "ToClose" + tempTime2);
                     }
 
                 }
-                mIsMove = false;
 
                 break;
         }
@@ -293,8 +291,8 @@ public class ISwitch extends View {
 
     private void viewAnimation(int time, final boolean toType, final int currentAlpha) {
 
-        final int distanceToBegin = mButtonX - mButtonRadius;
-        final int distanceToEnd = ((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius) - mButtonX;
+        final int distanceToBegin = mButtonX - mMinDistance;
+        final int distanceToEnd = mMaxDistance - mButtonX;
         // 设置时间差值器
         TimeInterpolator timeInterpolator = new TimeInterpolator() {
             @Override
@@ -319,9 +317,7 @@ public class ISwitch extends View {
                             mISwitchOnClickListeners.close();
                         }
                         mIsOpen = false;
-
                     } else {
-
                         if (mISwitchOnClickListeners != null && !mIsOpen) {
                             mISwitchOnClickListeners.open();
                         }
@@ -350,10 +346,10 @@ public class ISwitch extends View {
         this.mIsOpen = mIsOpen;
         if (mIsOpen) {
             mAlpha = 255;
-            mButtonX = ((mWidth - (mButtonRadius + mButtonRadius)) + mButtonRadius);
+            mButtonX = mMaxDistance;
         } else {
             mAlpha = 0;
-            mButtonX = mButtonRadius;
+            mButtonX = mMinDistance;
         }
         invalidate();
     }

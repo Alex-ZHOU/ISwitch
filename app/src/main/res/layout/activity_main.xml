@@ -29,28 +29,34 @@
     <com.alex.alexswitch.ISwitch
         android:id="@+id/id_apple_is"
         android:layout_width="40dp"
-        android:layout_height="20dp"
-        alexswitch:animationTime="300"/>
+        android:layout_height="20dp"/>
 
-    <!--<com.alex.alexswitch.ISwitch-->
-        <!--android:id="@+id/id_apple2_is"-->
-        <!--android:layout_width="150dp"-->
-        <!--android:layout_height="75dp"-->
-        <!--android:layout_below="@id/id_apple_is"-->
-        <!--android:layout_marginTop="@dimen/activity_vertical_margin"-->
-        <!--alexswitch:animationTime="2000"-->
-        <!--alexswitch:buttonColor="#ffff00"-->
-        <!--alexswitch:closeColor="#cddc39"-->
-        <!--alexswitch:isOpen="true"-->
-        <!--alexswitch:openColor="#673ab7" />-->
+    <com.alex.alexswitch.ISwitch
+        android:id="@+id/id_apple2_is"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
+        android:layout_below="@id/id_apple_is"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        alexswitch:animationTime="2000"
+        alexswitch:buttonColor="#ffff00"
+        alexswitch:closeColor="#cddc39"
+        alexswitch:isOpen="true"
+        alexswitch:openColor="#673ab7" />
+
+    <com.alex.alexswitch.ISwitch
+        android:id="@+id/id_apple3_is"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_below="@id/id_apple2_is"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        alexswitch:animationTime="5000"
+        alexswitch:buttonColor="#ffffff"
+        alexswitch:closeColor="#111111"
+        alexswitch:isOpen="false"
+        alexswitch:openColor="#673ab7" />
 
 
-    <!--<com.alex.alexswitch.MultiSwitch-->
-        <!--android:layout_width="150dp"-->
-        <!--android:layout_height="75dp"-->
-        <!--android:layout_below="@id/id_apple2_is"-->
-        <!--android:layout_marginTop="@dimen/activity_vertical_margin"-->
-        <!--alexswitch:type="circle" />-->
+
 
     <!--<TextView-->
         <!--android:layout_width="wrap_content"-->

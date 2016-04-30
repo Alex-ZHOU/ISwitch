@@ -27,6 +27,7 @@ public class DemoActivity extends AppCompatActivity {
 
     private ISwitch iSwitch;
     String TAG = "DemoActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,13 +39,13 @@ public class DemoActivity extends AppCompatActivity {
             @Override
             public void open() {
                 Log.i(TAG, "open: ");
-                Toast.makeText(getApplicationContext(),"Open",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Open", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void close() {
                 Log.i(TAG, "close: ");
-                Toast.makeText(getApplicationContext(),"Close",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Close", Toast.LENGTH_SHORT).show();
             }
         });
     }
