@@ -52,7 +52,7 @@ allprojects {
 }
 
 dependencies {
-  compile 'com.alex.alexswitch:alexswitch:1.1.2'
+  compile 'com.alex.alexswitch:alexswitch:1.1.3'
 }
 ```
 
